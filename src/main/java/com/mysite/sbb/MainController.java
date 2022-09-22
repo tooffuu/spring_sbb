@@ -1,66 +1,86 @@
 package com.mysite.sbb;
 
+import com.mysite.sbb.question.domain.dao.QuestionRepository;
+import com.mysite.sbb.question.domain.domain.Question;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class MainController {
-    int increaseNum = 0;
+    @Autowired
+    private QuestionRepository questionRepository;
 
-    @RequestMapping("/sbb")
+    @GetMapping("/createQuestion")
     @ResponseBody
-    public String index() {
-        System.out.println("sbb");
-        return "sbb";
+    public List<Question> createQuestion() {
+        Question q1 = new Question();
+        q1.setSubject("sbb가 무엇인가요?");
+        q1.setContent("sbb에 대해서 알고 싶습니다.");
+        q1.setCreateDate(LocalDateTime.now());
+        this.questionRepository.save(q1);
+
+        Question q2 = new Question();
+        q2.setSubject("스프링부트 모델 질문입니다.");
+        q2.setContent("id는 자동으로 생성되나요?");
+        q2.setCreateDate(LocalDateTime.now());
+        this.questionRepository.save(q2);
+
+        Question q3 = new Question();
+        q3.setSubject("스프링과 스프링부트");
+        q3.setContent("스프링과 스프링부트의 차이점은 무엇인가요?");
+        q3.setCreateDate(LocalDateTime.now());
+        this.questionRepository.save(q3);
+
+        return questionRepository.findAll();
     }
 
-    @GetMapping("/page1")
+    @GetMapping("/saveSessionAge")
     @ResponseBody
-    public String showPage1() {
-        return """
-                <form method="POST" action="/page2">
-                <input type="number" name="age" placeholder="나이"/>
-                <input type="submit" value="page2로 POST방식으로 이동" />
-                </form>
-                """;
-    }
-
-    @PostMapping("/page2")
-    @ResponseBody
-    public String showPage2Post(@RequestParam(value = "age", defaultValue = "0") int age) {
+    public String saveSessionAge(@RequestParam("age") int age, HttpSession session) {
         System.out.println("age : " + age);
-        return """
-                <h1>입력된 나이 : %d</h1>
-                <h1>POST 방식으로 옴</h1>
-                """.formatted(age);
+        session.setAttribute("age", age);
+
+        return "나이 %d살이 세션에 저장되었습니다.".formatted(age);
     }
 
-    @GetMapping("/plus")
+    @GetMapping("/getSessionAge")
     @ResponseBody
-    public int plus(int a, int b) {
-        return a + b;
+    public String getSession(HttpSession session) {
+        int age = (int) session.getAttribute("age");
+        return "세션에 저장된 나이는 %d살 입니다.".formatted(age);
     }
 
-    @GetMapping("/minor")
+    @GetMapping("/addPerson/{id}/{age}")
     @ResponseBody
-    public int minus(int a, int b) {
-        return a - b;
+    public Person addPerson(Person person, @PathVariable("id") int id, @PathVariable("age") int age) {
+        System.out.println("Id : " + person.getId());
+        System.out.println("Age : " + person.getAge());
+        return person;
+//        Person p = new Person(id, age, name);
+//        return p;
     }
+}
 
-    @GetMapping("/increase")
-    @ResponseBody
-    public int increases() {
-        return increaseNum++;
-    }
+@Getter
+@AllArgsConstructor
+class Person {
+    private int id;
+    private int age;
+    private String name;
 
-
-    @GetMapping("/gugudan")
-    @ResponseBody
-    public String gugudan(int dan, int limit) {
-        String result = "";
-        for (int i = 1; i <= limit ; i++) {
-            result += dan + " * " + i + " = " + (dan * i) + "<br />\n";
-        }
-        return result;
-    }
+//    public Person(int id, int age, String name) {
+//        this.id = id;
+//        this.age = age;
+//        this.name = name;
+//    }     AllArgsConstructor 사용하면 생성자 따로 작성안해도됨
 }
