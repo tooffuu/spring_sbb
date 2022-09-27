@@ -33,17 +33,17 @@ class SbbApplicationTests {
         q1.setCreateDate(LocalDateTime.now());
         this.questionRepository.save(q1);
 
-        Question q2 = new Question();
-        q2.setSubject("스프링부트 모델 질문입니다.");
-        q2.setContent("id는 자동으로 생성되나요?");
-        q2.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q2);
-
-        Question q3 = new Question();
-        q3.setSubject("인텔리제이와 스프링");
-        q3.setContent("스프링을 인텔리제이에서 설치하려면 어떻게해야하나요?");
-        q3.setCreateDate(LocalDateTime.now());
-        this.questionRepository.save(q3);
+//        Question q2 = new Question();
+//        q2.setSubject("스프링부트 모델 질문입니다.");
+//        q2.setContent("id는 자동으로 생성되나요?");
+//        q2.setCreateDate(LocalDateTime.now());
+//        this.questionRepository.save(q2);
+//
+//        Question q3 = new Question();
+//        q3.setSubject("인텔리제이와 스프링");
+//        q3.setContent("스프링을 인텔리제이에서 설치하려면 어떻게해야하나요?");
+//        q3.setCreateDate(LocalDateTime.now());
+//        this.questionRepository.save(q3);
     }
 
     @Test
@@ -67,13 +67,13 @@ class SbbApplicationTests {
     @Test
     void getQuestionSubject() {
         Question q = this.questionRepository.findBySubject("sbb가 무엇인가요?");
-        assertEquals(1, q.getId());
+        assertEquals(3, q.getId());
     }
 
     @Test
     void getQuestionsBySubject() {
         List<Question> questions = this.questionRepository.findAllBySubject("sbb가 무엇인가요?");
-        assertEquals(2, questions.size());
+        assertEquals(0, questions.size());
     }
 
     @Test
