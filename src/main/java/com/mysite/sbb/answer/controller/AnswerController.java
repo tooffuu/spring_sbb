@@ -22,6 +22,6 @@ public class AnswerController {
     public String createAnswer(Model model, @PathVariable("id") Integer id, @RequestParam String content) {
         Question question = questionService.getQuestion(id);
         answerService.create(question, content);
-        return String.format("redirect:/question/detail/%s", id);   // 답변 저장, 답변이 달린 페이지로 return
+        return String.format("redirect:/question/detail/%s", id);
     }
 }
