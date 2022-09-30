@@ -17,11 +17,6 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @RequestMapping("/")
-    public String root() {
-        return "redirect:/question/list";
-    }
-
     @RequestMapping("/list")
     public String list(Model model) {
         List<Question> questionList = questionService.getList();

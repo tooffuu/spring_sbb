@@ -17,6 +17,11 @@ public class MainController {
     @Autowired
     private QuestionRepository questionRepository;
 
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/question/list";
+    }
+
     @GetMapping("/createQuestion")
     @ResponseBody
     public List<Question> createQuestion() {
