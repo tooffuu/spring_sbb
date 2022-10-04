@@ -2,7 +2,7 @@ package com.mysite.sbb.answer.service;
 
 import com.mysite.sbb.answer.dao.AnswerRepository;
 import com.mysite.sbb.answer.domain.Answer;
-import com.mysite.sbb.question.domain.domain.Question;
+import com.mysite.sbb.question.domain.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

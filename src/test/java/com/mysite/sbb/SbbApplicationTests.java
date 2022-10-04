@@ -2,8 +2,8 @@ package com.mysite.sbb;
 
 import com.mysite.sbb.answer.dao.AnswerRepository;
 import com.mysite.sbb.answer.domain.Answer;
-import com.mysite.sbb.question.domain.dao.QuestionRepository;
-import com.mysite.sbb.question.domain.domain.Question;
+import com.mysite.sbb.question.dao.QuestionRepository;
+import com.mysite.sbb.question.domain.Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

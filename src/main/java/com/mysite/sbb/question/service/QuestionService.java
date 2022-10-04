@@ -1,8 +1,8 @@
-package com.mysite.sbb.question.domain.service;
+package com.mysite.sbb.question.service;
 
-import com.mysite.sbb.question.domain.dao.QuestionRepository;
-import com.mysite.sbb.question.domain.domain.Question;
-import com.mysite.sbb.question.domain.util.DataNotFoundException;
+import com.mysite.sbb.question.domain.Question;
+import com.mysite.sbb.question.dao.QuestionRepository;
+import com.mysite.sbb.question.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +29,10 @@ public class QuestionService {
     }
 
     public void create(String subject, String content) {
-        Question question = new Question();
-        question.setSubject(subject);
-        question.setContent(content);
-        question.setCreateDate(LocalDateTime.now());
-        questionRepository.save(question);
+        Question q = new Question();
+        q.setSubject(subject);
+        q.setContent(content);
+        q.setCreateDate(LocalDateTime.now());
+        questionRepository.save(q);
     }
 }

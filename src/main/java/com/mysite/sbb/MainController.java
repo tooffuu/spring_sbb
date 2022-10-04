@@ -1,7 +1,7 @@
 package com.mysite.sbb;
 
-import com.mysite.sbb.question.domain.dao.QuestionRepository;
-import com.mysite.sbb.question.domain.domain.Question;
+import com.mysite.sbb.question.dao.QuestionRepository;
+import com.mysite.sbb.question.domain.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

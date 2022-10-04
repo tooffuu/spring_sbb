@@ -1,6 +1,6 @@
-package com.mysite.sbb.question.domain.dao;
+package com.mysite.sbb.question.dao;
 
-import com.mysite.sbb.question.domain.domain.Question;
+import com.mysite.sbb.question.domain.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

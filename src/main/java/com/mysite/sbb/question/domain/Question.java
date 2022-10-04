@@ -1,4 +1,4 @@
-package com.mysite.sbb.question.domain.domain;
+package com.mysite.sbb.question.domain;
 
 import com.mysite.sbb.answer.domain.Answer;
 import lombok.Getter;

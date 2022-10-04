@@ -1,8 +1,8 @@
 package com.mysite.sbb.answer.controller;
 
 import com.mysite.sbb.answer.service.AnswerService;
-import com.mysite.sbb.question.domain.domain.Question;
-import com.mysite.sbb.question.domain.service.QuestionService;
+import com.mysite.sbb.question.domain.Question;
+import com.mysite.sbb.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
