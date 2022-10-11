@@ -8,18 +8,23 @@
         <tr>
             <th>글번호</th>
             <th>제목</th>
+            <th>글쓴이</th>
             <th>작성일시</th>
-            <th>답변</th>
         </tr>
         </thead>
         <tbody>
         <tr class="content" th:each="question, loop : ${paging}">
             <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
-            <td>
+            <td class="subject">
                 <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                <span class="text-danger small ms-2"
+                      th:if="${#lists.size(question.answerList) > 0}"
+                      th:text="${#lists.size(question.answerList)}">
+                    </span>
             </td>
+            <td><span th:if="${question.author != null}" th:text="${question.author.username}"></span></td>
             <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
-            <td th:text="|(${question.answerList.size})|"></td>
+<!--            <td th:text="|(${question.answerList.size})|"></td>-->
         </tr>
         </tbody>
     </table>

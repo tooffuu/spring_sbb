@@ -22,11 +22,13 @@ top : 30px;
 }
 
 .table-dark > tr > th {
-text-align : center;}
+text-align : center;
+}
 
 .content {
 text-align:center;
 }
+
 .content > td {
 font-size : 1.2rem;
 }
