@@ -16,8 +16,12 @@
             <div class="my-3">
                 <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
-                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username or #authorization.expression('hasRole(''ADMIN'')')}"
                    th:text="수정"></a>
+                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username or #authorization.expression('hasRole(''ADMIN'')')}"
+                   th:text="삭제"></a>
             </div>
         </div>
     </div>
@@ -36,6 +40,12 @@
                     <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
+            <div class="my-3">
+                <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username or #authorization.expression('hasRole(''ADMIN'')')}"
+                   th:text="수정"></a>
+            </div>
         </div>
     </div>
     <!-- 답변 반복 끝  -->
@@ -48,4 +58,14 @@
     </form>
     <form action="/question/list"><button class="list-button btn btn-primary my-2">목록</button></form>
 </div>
+<script layout:fragment="script" type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
 </html>

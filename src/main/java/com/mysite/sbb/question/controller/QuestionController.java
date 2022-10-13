@@ -64,8 +64,9 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, @AuthenticationPrincipal SiteUser siteUser) {
+        System.out.println("authority : " + siteUser.getRole()!="ROLE_ADMIN");
         Question question = this.questionService.getQuestion(id);
-        if(!question.getAuthor().getUsername().equals(siteUser.getUsername())) {
+        if((!question.getAuthor().getUsername().equals(siteUser.getUsername())) && !(siteUser.getRole().equals("ROLE_ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
@@ -81,10 +82,33 @@ public class QuestionController {
             return "question_form";
         }
         Question question = this.questionService.getQuestion(id);
-        if (!question.getAuthor().getUsername().equals(siteUser.getUsername())) {
+        if ((!question.getAuthor().getUsername().equals(siteUser.getUsername())) && !(siteUser.getRole().equals("ROLE_ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
         return String.format("redirect:/question/detail/%s", id);
+    }
+
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/delete/{id}")
+//    public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
+//        Question question = this.questionService.getQuestion(id);
+//        if(!question.getAuthor().getUsername().equals(principal.getName())) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
+//        }
+//        questionService.delete(question);
+//        return "redirect:/";
+//    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String questionDelete(@AuthenticationPrincipal SiteUser siteuser, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        if((!question.getAuthor().getUsername().equals(siteuser.getUsername())) && !(siteuser.getRole().equals("ROLE_ADMIN"))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
+        }
+        questionService.delete(question);
+        return "redirect:/";
+
     }
 }
