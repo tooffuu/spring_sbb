@@ -27,7 +27,7 @@ public class QuestionService {
 
     public Question getQuestion(Integer id) {
         Optional<Question> questionOptional = questionRepository.findById(id);
-        if(questionOptional.isPresent()) {
+        if (questionOptional.isPresent()) {
             return questionOptional.get();
         } else {
             throw new DataNotFoundException("Question not found");
@@ -60,4 +60,11 @@ public class QuestionService {
     public void delete(Question question) {
         questionRepository.delete(question);
     }
+
+    public void vote(Question question, SiteUser siteUser) {
+
+        question.getVoter().add(siteUser);
+        this.questionRepository.save(question);
+    }
+
 }

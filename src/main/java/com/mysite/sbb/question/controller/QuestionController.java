@@ -5,6 +5,7 @@ import com.mysite.sbb.question.QuestionForm;
 import com.mysite.sbb.question.domain.Question;
 import com.mysite.sbb.question.service.QuestionService;
 import com.mysite.sbb.siteuser.domain.SiteUser;
+import com.mysite.sbb.siteuser.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,10 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+    private final UserService userService;
+
     @RequestMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue="0") int page) {
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
         Page<Question> paging = questionService.getList(page);
         model.addAttribute("paging", paging);
 //        List<Question> questionList = questionService.getList();
@@ -64,9 +67,9 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String questionModify(QuestionForm questionForm, @PathVariable("id") Integer id, @AuthenticationPrincipal SiteUser siteUser) {
-        System.out.println("authority : " + siteUser.getRole()!="ROLE_ADMIN");
+        System.out.println("authority : " + siteUser.getRole() != "ROLE_ADMIN");
         Question question = this.questionService.getQuestion(id);
-        if((!question.getAuthor().getUsername().equals(siteUser.getUsername())) && !(siteUser.getRole().equals("ROLE_ADMIN"))) {
+        if ((!question.getAuthor().getUsername().equals(siteUser.getUsername())) && !(siteUser.getRole().equals("ROLE_ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
         }
         questionForm.setSubject(question.getSubject());
@@ -104,11 +107,20 @@ public class QuestionController {
     @GetMapping("/delete/{id}")
     public String questionDelete(@AuthenticationPrincipal SiteUser siteuser, @PathVariable("id") Integer id) {
         Question question = this.questionService.getQuestion(id);
-        if((!question.getAuthor().getUsername().equals(siteuser.getUsername())) && !(siteuser.getRole().equals("ROLE_ADMIN"))) {
+        if ((!question.getAuthor().getUsername().equals(siteuser.getUsername())) && !(siteuser.getRole().equals("ROLE_ADMIN"))) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
         }
         questionService.delete(question);
         return "redirect:/";
 
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String questionVote(@AuthenticationPrincipal SiteUser siteUser, @PathVariable("id") Integer id) {
+        Question question = this.questionService.getQuestion(id);
+        SiteUser _siteUser = this.userService.getUser(siteUser.getUsername());
+        this.questionService.vote(question, _siteUser);
+        return String.format("redirect:/question/detail/%s", id);
     }
 }
